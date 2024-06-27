@@ -23,12 +23,14 @@ public class AuthController {
 
 
     @GetMapping("/callback")
-    public String handleAuthorizationCallback(@RequestParam(name = "code") String code, @RequestParam(name = "state") String state) {
-        ResponseEntity<String> response = authService.requestAccessToken(code, "http://localhost:8080/callback");
+    public RedirectView handleAuthorizationCallback(@RequestParam(name = "code") String code, @RequestParam(name = "state") String state) {
+        ResponseEntity<String> response = authService.requestAccessToken(code, "http://localhost:8888/callback");
         if (response.getStatusCode().is2xxSuccessful()) {
-            return "Token received: " + response.getBody();
+            //return "Token received: " + response.getBody();
+            return new RedirectView("/callback.html");
         } else {
-            return "Failed to obtain token";
+            //return "Failed to obtain token";
+            return new RedirectView("/error.html");
         }
     }
 
